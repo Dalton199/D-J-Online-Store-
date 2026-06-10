@@ -74,6 +74,8 @@ const defaultProducts = [
   }
 ];
 
+const defaultProductIds = new Set(defaultProducts.map((product) => product.id));
+
 let products = loadProducts();
 let cart = loadCart();
 let activeCategory = "Tous";
@@ -111,6 +113,7 @@ const productImage = document.getElementById("productImage");
 const productFileName = document.getElementById("productFileName");
 const productSubmit = document.getElementById("productSubmit");
 const productCancel = document.getElementById("productCancel");
+const clearAddedProducts = document.getElementById("clearAddedProducts");
 const logoUpload = document.getElementById("logoUpload");
 const logoFileName = document.getElementById("logoFileName");
 const whatsappNumbers = [
@@ -151,6 +154,7 @@ adminEntry.addEventListener("click", openAdminGate);
 adminGateClose.addEventListener("click", closeAdminGate);
 adminClose.addEventListener("click", closeAdminPanel);
 productCancel.addEventListener("click", resetAdminForm);
+clearAddedProducts.addEventListener("click", clearAddedAdminProducts);
 
 productImage.addEventListener("change", () => {
   productFileName.textContent = productImage.files?.[0]?.name || "Aucun fichier sélectionné";
@@ -790,6 +794,29 @@ function deleteProduct(id) {
   renderCart();
   renderAdminList();
   showToast("Produit supprimé.");
+}
+
+function clearAddedAdminProducts() {
+  const addedProducts = products.filter((product) => !defaultProductIds.has(product.id));
+
+  if (!addedProducts.length) {
+    showToast("Aucun produit ajouté à effacer.");
+    return;
+  }
+
+  const confirmed = confirm(`Effacer ${addedProducts.length} produit(s) ajouté(s) ?`);
+  if (!confirmed) return;
+
+  const addedProductIds = new Set(addedProducts.map((product) => product.id));
+  products = products.filter((product) => !addedProductIds.has(product.id));
+  cart = cart.filter((item) => !addedProductIds.has(item.id));
+  saveProducts();
+  saveCart();
+  resetAdminForm();
+  renderProducts();
+  renderCart();
+  renderAdminList();
+  showToast("Produits ajoutés effacés.");
 }
 
 function showToast(message) {
