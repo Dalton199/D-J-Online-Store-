@@ -1,18 +1,20 @@
-const WA_NUMBER = "27749396760";
+const DEFAULT_WA_NUMBER = "27749396760";
 const ADMIN_PASSWORD = "1996";
 
 const STORAGE_KEYS = {
   products: "djBusinessProducts",
   cart: "djBusinessCart",
   theme: "djBusinessTheme",
-  logo: "djBusinessLogo"
+  logo: "djBusinessLogo",
+  whatsapp: "djBusinessWhatsapp"
 };
 
 const LEGACY_STORAGE_KEYS = {
   products: "nkBusinessProducts",
   cart: "nkBusinessCart",
   theme: "nkBusinessTheme",
-  logo: "nkBusinessLogo"
+  logo: "nkBusinessLogo",
+  whatsapp: "nkBusinessWhatsapp"
 };
 
 const categories = [
@@ -111,11 +113,14 @@ const productSubmit = document.getElementById("productSubmit");
 const productCancel = document.getElementById("productCancel");
 const logoUpload = document.getElementById("logoUpload");
 const logoFileName = document.getElementById("logoFileName");
+const whatsappNumber = document.getElementById("whatsappNumber");
+const saveWhatsapp = document.getElementById("saveWhatsapp");
 const adminList = document.getElementById("adminList");
 const toastStack = document.getElementById("toastStack");
 
 initTheme();
 applySavedLogo();
+initWhatsappNumber();
 populateCategorySelect();
 renderCategoryFilters();
 renderProducts();
@@ -162,6 +167,13 @@ logoUpload.addEventListener("change", async () => {
   } finally {
     logoUpload.value = "";
   }
+});
+
+saveWhatsapp.addEventListener("click", saveWhatsappNumber);
+whatsappNumber.addEventListener("keydown", (event) => {
+  if (event.key !== "Enter") return;
+  event.preventDefault();
+  saveWhatsappNumber();
 });
 
 adminGate.addEventListener("click", (event) => {
@@ -334,6 +346,32 @@ function applySavedLogo() {
   brandMark.style.backgroundImage = `url("${savedLogo}")`;
   brandMark.textContent = "D&J";
   logoFileName.textContent = "Logo personnalisé";
+}
+
+function initWhatsappNumber() {
+  whatsappNumber.value = getWhatsappNumber();
+}
+
+function getWhatsappNumber() {
+  const saved = localStorage.getItem(STORAGE_KEYS.whatsapp) || localStorage.getItem(LEGACY_STORAGE_KEYS.whatsapp);
+  return sanitizeWhatsappNumber(saved) || DEFAULT_WA_NUMBER;
+}
+
+function sanitizeWhatsappNumber(value) {
+  return String(value || "").replace(/\D/g, "");
+}
+
+function saveWhatsappNumber() {
+  const sanitized = sanitizeWhatsappNumber(whatsappNumber.value);
+
+  if (sanitized.length < 8) {
+    showToast("Numéro WhatsApp non valide.");
+    return;
+  }
+
+  localStorage.setItem(STORAGE_KEYS.whatsapp, sanitized);
+  whatsappNumber.value = sanitized;
+  showToast("Numéro WhatsApp sauvegardé.");
 }
 
 function populateCategorySelect() {
@@ -578,7 +616,7 @@ function buyNow(items) {
     .map((item) => `- ${item.product.name} x${item.quantity}: ${formatMoney(item.product.price * item.quantity)}`)
     .join("\n");
   const message = `Bonjour, je souhaite acheter les articles suivants:\n${lines}\nTotal: ${formatMoney(total)}`;
-  window.open(`https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(message)}`, "_blank", "noopener");
+  window.open(`https://wa.me/${getWhatsappNumber()}?text=${encodeURIComponent(message)}`, "_blank", "noopener");
 }
 
 function openCart() {

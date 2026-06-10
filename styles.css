@@ -799,6 +799,18 @@ button {
   margin-top: 8px;
 }
 
+.settings-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 10px;
+  align-items: center;
+}
+
+.settings-row .secondary-button {
+  min-height: 44px;
+  padding: 0 16px;
+}
+
 .admin-list {
   min-height: 0;
   overflow: auto;
