@@ -2,6 +2,13 @@ const WA_NUMBER = "27749396760";
 const ADMIN_PASSWORD = "1996";
 
 const STORAGE_KEYS = {
+  products: "djBusinessProducts",
+  cart: "djBusinessCart",
+  theme: "djBusinessTheme",
+  logo: "djBusinessLogo"
+};
+
+const LEGACY_STORAGE_KEYS = {
   products: "nkBusinessProducts",
   cart: "nkBusinessCart",
   theme: "nkBusinessTheme",
@@ -238,7 +245,7 @@ document.addEventListener("keydown", (event) => {
 
 function loadProducts() {
   try {
-    const saved = JSON.parse(localStorage.getItem(STORAGE_KEYS.products));
+    const saved = JSON.parse(localStorage.getItem(STORAGE_KEYS.products) || localStorage.getItem(LEGACY_STORAGE_KEYS.products));
     if (Array.isArray(saved) && saved.length) return normalizeProducts(saved);
   } catch (error) {
     console.warn(error);
@@ -256,7 +263,7 @@ function normalizeProducts(items) {
 
 function loadCart() {
   try {
-    const saved = JSON.parse(localStorage.getItem(STORAGE_KEYS.cart));
+    const saved = JSON.parse(localStorage.getItem(STORAGE_KEYS.cart) || localStorage.getItem(LEGACY_STORAGE_KEYS.cart));
     if (Array.isArray(saved)) return saved;
   } catch (error) {
     console.warn(error);
@@ -314,18 +321,18 @@ function prepareUploadedImage(file, maxSize) {
 }
 
 function applySavedLogo() {
-  const savedLogo = localStorage.getItem(STORAGE_KEYS.logo);
+  const savedLogo = localStorage.getItem(STORAGE_KEYS.logo) || localStorage.getItem(LEGACY_STORAGE_KEYS.logo);
   if (!savedLogo) {
     brandMark.classList.remove("has-logo");
     brandMark.style.backgroundImage = "";
-    brandMark.textContent = "NK";
+    brandMark.textContent = "D&J";
     logoFileName.textContent = "Logo actuel";
     return;
   }
 
   brandMark.classList.add("has-logo");
   brandMark.style.backgroundImage = `url("${savedLogo}")`;
-  brandMark.textContent = "NK";
+  brandMark.textContent = "D&J";
   logoFileName.textContent = "Logo personnalisé";
 }
 
@@ -600,7 +607,7 @@ function closeImageModal() {
 }
 
 function initTheme() {
-  const saved = localStorage.getItem(STORAGE_KEYS.theme);
+  const saved = localStorage.getItem(STORAGE_KEYS.theme) || localStorage.getItem(LEGACY_STORAGE_KEYS.theme);
   const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
   setTheme(saved || (prefersDark ? "dark" : "light"));
 }
