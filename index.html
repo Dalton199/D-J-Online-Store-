@@ -136,12 +136,14 @@
           <span id="logoFileName">Logo actuel</span>
         </div>
 
-        <label for="whatsappNumber">Numéro WhatsApp des commandes</label>
-        <div class="settings-row">
-          <input id="whatsappNumber" type="tel" inputmode="tel" autocomplete="tel" placeholder="27749396760">
+        <label>Numéros WhatsApp des commandes</label>
+        <div class="whatsapp-settings">
+          <input id="whatsappNumber1" type="tel" inputmode="tel" autocomplete="tel" placeholder="27749396760" aria-label="Numéro WhatsApp 1">
+          <input id="whatsappNumber2" type="tel" inputmode="tel" autocomplete="tel" placeholder="Deuxième numéro" aria-label="Numéro WhatsApp 2">
+          <input id="whatsappNumber3" type="tel" inputmode="tel" autocomplete="tel" placeholder="Troisième numéro" aria-label="Numéro WhatsApp 3">
           <button class="secondary-button" id="saveWhatsapp" type="button">Sauver</button>
         </div>
-        <p class="file-note">Indiquez le numéro avec l'indicatif pays, sans le premier zéro.</p>
+        <p class="file-note">Ajoutez jusqu'à 3 numéros avec l'indicatif pays, sans le premier zéro.</p>
 
         <label for="productName">Nom du produit</label>
         <input id="productName" type="text" maxlength="80" required>

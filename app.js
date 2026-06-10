@@ -113,14 +113,18 @@ const productSubmit = document.getElementById("productSubmit");
 const productCancel = document.getElementById("productCancel");
 const logoUpload = document.getElementById("logoUpload");
 const logoFileName = document.getElementById("logoFileName");
-const whatsappNumber = document.getElementById("whatsappNumber");
+const whatsappNumbers = [
+  document.getElementById("whatsappNumber1"),
+  document.getElementById("whatsappNumber2"),
+  document.getElementById("whatsappNumber3")
+];
 const saveWhatsapp = document.getElementById("saveWhatsapp");
 const adminList = document.getElementById("adminList");
 const toastStack = document.getElementById("toastStack");
 
 initTheme();
 applySavedLogo();
-initWhatsappNumber();
+initWhatsappNumbers();
 populateCategorySelect();
 renderCategoryFilters();
 renderProducts();
@@ -170,10 +174,12 @@ logoUpload.addEventListener("change", async () => {
 });
 
 saveWhatsapp.addEventListener("click", saveWhatsappNumber);
-whatsappNumber.addEventListener("keydown", (event) => {
-  if (event.key !== "Enter") return;
-  event.preventDefault();
-  saveWhatsappNumber();
+whatsappNumbers.forEach((input) => {
+  input.addEventListener("keydown", (event) => {
+    if (event.key !== "Enter") return;
+    event.preventDefault();
+    saveWhatsappNumber();
+  });
 });
 
 adminGate.addEventListener("click", (event) => {
@@ -348,13 +354,36 @@ function applySavedLogo() {
   logoFileName.textContent = "Logo personnalisé";
 }
 
-function initWhatsappNumber() {
-  whatsappNumber.value = getWhatsappNumber();
+function initWhatsappNumbers() {
+  getWhatsappNumbers().forEach((number, index) => {
+    if (whatsappNumbers[index]) whatsappNumbers[index].value = number;
+  });
 }
 
-function getWhatsappNumber() {
+function getWhatsappNumbers() {
   const saved = localStorage.getItem(STORAGE_KEYS.whatsapp) || localStorage.getItem(LEGACY_STORAGE_KEYS.whatsapp);
-  return sanitizeWhatsappNumber(saved) || DEFAULT_WA_NUMBER;
+
+  try {
+    const parsed = JSON.parse(saved);
+    if (Array.isArray(parsed)) return normalizeWhatsappNumbers(parsed);
+  } catch (error) {
+    console.warn(error);
+  }
+
+  return normalizeWhatsappNumbers([saved || DEFAULT_WA_NUMBER]);
+}
+
+function normalizeWhatsappNumbers(values) {
+  const uniqueNumbers = [];
+
+  values.forEach((value) => {
+    const sanitized = sanitizeWhatsappNumber(value);
+    if (sanitized.length >= 8 && !uniqueNumbers.includes(sanitized)) {
+      uniqueNumbers.push(sanitized);
+    }
+  });
+
+  return uniqueNumbers.length ? uniqueNumbers.slice(0, 3) : [DEFAULT_WA_NUMBER];
 }
 
 function sanitizeWhatsappNumber(value) {
@@ -362,16 +391,18 @@ function sanitizeWhatsappNumber(value) {
 }
 
 function saveWhatsappNumber() {
-  const sanitized = sanitizeWhatsappNumber(whatsappNumber.value);
+  const sanitizedNumbers = normalizeWhatsappNumbers(whatsappNumbers.map((input) => input.value));
 
-  if (sanitized.length < 8) {
+  if (!sanitizedNumbers.length) {
     showToast("Numéro WhatsApp non valide.");
     return;
   }
 
-  localStorage.setItem(STORAGE_KEYS.whatsapp, sanitized);
-  whatsappNumber.value = sanitized;
-  showToast("Numéro WhatsApp sauvegardé.");
+  localStorage.setItem(STORAGE_KEYS.whatsapp, JSON.stringify(sanitizedNumbers));
+  whatsappNumbers.forEach((input, index) => {
+    input.value = sanitizedNumbers[index] || "";
+  });
+  showToast("Numéros WhatsApp sauvegardés.");
 }
 
 function populateCategorySelect() {
@@ -616,7 +647,9 @@ function buyNow(items) {
     .map((item) => `- ${item.product.name} x${item.quantity}: ${formatMoney(item.product.price * item.quantity)}`)
     .join("\n");
   const message = `Bonjour, je souhaite acheter les articles suivants:\n${lines}\nTotal: ${formatMoney(total)}`;
-  window.open(`https://wa.me/${getWhatsappNumber()}?text=${encodeURIComponent(message)}`, "_blank", "noopener");
+  getWhatsappNumbers().forEach((number) => {
+    window.open(`https://wa.me/${number}?text=${encodeURIComponent(message)}`, "_blank", "noopener");
+  });
 }
 
 function openCart() {

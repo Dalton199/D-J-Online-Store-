@@ -811,6 +811,16 @@ button {
   padding: 0 16px;
 }
 
+.whatsapp-settings {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 8px;
+}
+
+.whatsapp-settings .secondary-button {
+  min-height: 44px;
+}
+
 .admin-list {
   min-height: 0;
   overflow: auto;
