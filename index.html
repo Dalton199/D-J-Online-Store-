@@ -1,179 +1,195 @@
 <!doctype html>
-<html lang="fr">
+<html lang="en">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="D&amp;J- Business, boutique premium d'accessoires, parfums, mode, montres, sacs et chaussures.">
-    <title>D&amp;J- Business | Boutique premium d'accessoires</title>
+    <meta name="description" content="A B2B marketplace concept for trusted Siemens TIA Portal function blocks, with architecture, moderation, licensing, and download flows.">
+    <title>BlockForge | TIA Portal FB Marketplace</title>
     <link rel="stylesheet" href="styles.css">
   </head>
   <body>
-    <header class="site-header">
-      <div class="header-inner">
-        <a class="brand" href="#accueil" aria-label="Accueil D&amp;J- Business">
-          <span class="brand-mark" id="brandMark">D&amp;J</span>
-          <span class="brand-copy">D&amp;J- Business</span>
-        </a>
-
-        <nav class="main-nav" aria-label="Navigation principale">
-          <a href="#accueil">Accueil</a>
-          <a href="#categories">Catégories</a>
-          <button type="button" data-cart-open>Panier</button>
-        </nav>
-
-        <div class="header-actions">
-          <button class="icon-button" id="themeToggle" type="button" aria-label="Basculer le thème" title="Mode sombre / clair">
-            <span aria-hidden="true">☾</span>
-          </button>
-          <button class="cart-button" id="cartButton" type="button" aria-label="Ouvrir le panier" data-cart-open>
-            <span class="bag-icon" aria-hidden="true"></span>
-            <span class="cart-count" id="cartCount">0</span>
-          </button>
-        </div>
-      </div>
+    <header class="topbar">
+      <a class="brand" href="#marketplace" aria-label="BlockForge home">
+        <span class="brand-mark">BF</span>
+        <span>
+          <strong>BlockForge</strong>
+          <small>TIA FB Marketplace</small>
+        </span>
+      </a>
+      <nav class="nav" aria-label="Primary navigation">
+        <a href="#catalog">Catalog</a>
+        <a href="#architecture">Architecture</a>
+        <a href="#moderation">Moderation</a>
+        <a href="#admin">Admin</a>
+      </nav>
+      <a class="nav-action" href="#mvp">MVP Plan</a>
     </header>
 
     <main>
-      <section class="hero" id="accueil">
-        <div class="hero-image" aria-hidden="true"></div>
-        <div class="hero-overlay" aria-hidden="true"></div>
-        <div class="hero-content">
-          <span class="eyebrow">Accessoires premium</span>
-          <h1>Bienvenue chez D&amp;J- Business</h1>
-          <p>D&amp;J- Business, vos articles de qualité disponibles en quantité, commandez chez nous en toute simplicité !</p>
-          <a class="primary-cta" href="#boutique">Explorer la boutique</a>
+      <section class="hero" id="marketplace">
+        <div class="hero-media">
+          <img src="assets/architecture-hero.png" alt="Industrial automation marketplace concept with PLC hardware, code panels, and compatibility metadata">
+        </div>
+        <div class="hero-panel">
+          <p class="eyebrow">Industrial automation code marketplace</p>
+          <h1>Trusted Siemens TIA Portal blocks, ready for engineering teams.</h1>
+          <p class="hero-copy">Sell and buy pre-made SCL, LAD, FBD, DB, and UDT packages with validation, compatibility metadata, signed downloads, Stripe Connect payouts, and admin-grade quality control.</p>
+          <div class="hero-actions">
+            <a class="button primary" href="#catalog">Explore marketplace</a>
+            <a class="button secondary" href="#architecture">View architecture</a>
+          </div>
+          <dl class="hero-stats" aria-label="Marketplace metrics">
+            <div>
+              <dt>V15-V18+</dt>
+              <dd>TIA support</dd>
+            </div>
+            <div>
+              <dt>S7-1200/1500</dt>
+              <dd>CPU filters</dd>
+            </div>
+            <div>
+              <dt>5 days</dt>
+              <dd>dispute SLA</dd>
+            </div>
+          </dl>
         </div>
       </section>
 
-      <section class="category-band" id="categories">
-        <div class="section-shell">
-          <div class="section-heading compact">
-            <span class="eyebrow">Collection</span>
-            <h2>Catégories</h2>
+      <section class="filter-band" id="catalog">
+        <div class="section-head">
+          <p class="eyebrow">Buyer workspace</p>
+          <h2>Catalog built for PLC engineers</h2>
+          <p>Filter by TIA version, CPU family, language, trust tier, and licensing model before purchasing a block.</p>
+        </div>
+        <div class="filters" aria-label="Catalog filters">
+          <button class="filter active" type="button" data-filter="all">All</button>
+          <button class="filter" type="button" data-filter="s7-1200">S7-1200</button>
+          <button class="filter" type="button" data-filter="s7-1500">S7-1500</button>
+          <button class="filter" type="button" data-filter="scl">SCL</button>
+          <button class="filter" type="button" data-filter="trusted">Trusted sellers</button>
+        </div>
+        <div class="catalog-grid" id="catalogGrid"></div>
+      </section>
+
+      <section class="split-section" id="architecture">
+        <div class="section-head flush">
+          <p class="eyebrow">System design</p>
+          <h2>Microservices with practical boundaries</h2>
+          <p>REST handles immediate user commands. Events handle validation, indexing, notification, audit, and operational dashboards.</p>
+        </div>
+        <div class="service-map" aria-label="Service architecture diagram">
+          <div class="node gateway">API Gateway</div>
+          <div class="map-row">
+            <div class="node">Auth</div>
+            <div class="node">Catalog</div>
+            <div class="node">Payment</div>
+            <div class="node">Download</div>
+            <div class="node">Admin</div>
           </div>
-          <div class="category-filters" id="categoryFilters" aria-label="Filtrer les produits"></div>
+          <div class="bus">RabbitMQ event bus</div>
+          <div class="map-row muted">
+            <div class="node">PostgreSQL</div>
+            <div class="node">S3/MinIO</div>
+            <div class="node">Redis</div>
+            <div class="node">Elasticsearch</div>
+          </div>
         </div>
       </section>
 
-      <section class="shop-section" id="boutique">
-        <div class="section-shell">
-          <div class="section-heading">
-            <span class="eyebrow">Vitrine</span>
-            <h2>Articles disponibles</h2>
+      <section class="contracts">
+        <div class="contract-card">
+          <div class="card-top">
+            <p class="eyebrow">REST contract</p>
+            <span>Download</span>
           </div>
-          <div class="products-grid" id="productsGrid"></div>
+          <pre><code>POST /downloads/entitlements/{id}/signed-url
+Authorization: Bearer jwt
+
+{
+  "license_type": "perpetual_company",
+  "expires_in_minutes": 10
+}</code></pre>
         </div>
+        <div class="contract-card">
+          <div class="card-top">
+            <p class="eyebrow">Event contract</p>
+            <span>Catalog</span>
+          </div>
+          <pre><code>{
+  "event_type": "catalog.listing_uploaded.v1",
+  "payload": {
+    "listing_id": "lst_123",
+    "version_id": "ver_018",
+    "seller_id": "sel_456"
+  }
+}</code></pre>
+        </div>
+      </section>
+
+      <section class="moderation" id="moderation">
+        <div class="section-head flush">
+          <p class="eyebrow">Quality gate</p>
+          <h2>Automated validation before human review</h2>
+          <p>Each upload is quarantined, unpacked safely, checked for metadata completeness, parsed for SCL structure, and scored for risk.</p>
+        </div>
+        <div class="pipeline" aria-label="Moderation pipeline">
+          <div class="step active">Upload</div>
+          <div class="step">Quarantine</div>
+          <div class="step">Parse</div>
+          <div class="step">Risk score</div>
+          <div class="step">Review</div>
+          <div class="step">Publish</div>
+        </div>
+        <div class="rules-grid">
+          <article>
+            <h3>Required metadata</h3>
+            <p>TIA version, CPU family, block type, tag interface docs, release notes, and license model are mandatory.</p>
+          </article>
+          <article>
+            <h3>Static checks</h3>
+            <p>Reject unsafe ZIP traversal, missing endings, undocumented globals, excessive generated code, and hidden bypass flags.</p>
+          </article>
+          <article>
+            <h3>Trust tiers</h3>
+            <p>Verified companies and trusted sellers move from manual review to fast-track or auto-approval when validation is clean.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="admin" id="admin">
+        <aside class="admin-sidebar">
+          <p class="eyebrow">Admin console</p>
+          <h2>Operations surface</h2>
+          <button class="tab active" type="button" data-panel="reviews">Reviews</button>
+          <button class="tab" type="button" data-panel="sellers">Sellers</button>
+          <button class="tab" type="button" data-panel="health">Health</button>
+          <button class="tab" type="button" data-panel="disputes">Disputes</button>
+        </aside>
+        <div class="admin-panel" id="adminPanel" aria-live="polite"></div>
+      </section>
+
+      <section class="mvp" id="mvp">
+        <div class="section-head">
+          <p class="eyebrow">Launch plan</p>
+          <h2>MVP implementation checklist</h2>
+        </div>
+        <ol class="checklist">
+          <li><span>01</span> Auth0 roles, gateway routing, and seller onboarding.</li>
+          <li><span>02</span> Catalog upload flow with metadata and S3/MinIO quarantine storage.</li>
+          <li><span>03</span> Validation worker for SCL, DB, UDT, and ZIP packages.</li>
+          <li><span>04</span> Admin moderation queue with audit logs and seller trust tiers.</li>
+          <li><span>05</span> Stripe Connect checkout, platform fees, and entitlement creation.</li>
+          <li><span>06</span> Signed CloudFront downloads, revocation, and download audit trail.</li>
+          <li><span>07</span> Elasticsearch indexing, transactional email, and health alerts.</li>
+        </ol>
       </section>
     </main>
 
-    <button class="admin-entry" id="adminEntry" type="button">Admin</button>
+    <footer class="footer">
+      <span>BlockForge architecture concept</span>
+      <span>Built for practical Siemens TIA Portal FB marketplace planning</span>
+    </footer>
 
-    <div class="screen-overlay" id="cartOverlay" data-cart-close></div>
-    <aside class="cart-panel" id="cartPanel" aria-labelledby="cartTitle" aria-hidden="true">
-      <div class="panel-header">
-        <div>
-          <span class="eyebrow">Commande</span>
-          <h2 id="cartTitle">Panier</h2>
-        </div>
-        <button class="icon-button" type="button" aria-label="Fermer le panier" data-cart-close>
-          <span aria-hidden="true">×</span>
-        </button>
-      </div>
-      <div class="cart-items" id="cartItems"></div>
-      <div class="cart-total">
-        <span>Total</span>
-        <strong id="cartTotal">0 $</strong>
-      </div>
-      <button class="checkout-button" id="checkoutButton" type="button">Acheter maintenant</button>
-    </aside>
-
-    <div class="image-modal" id="imageModal" aria-hidden="true">
-      <button class="modal-close icon-button" id="modalClose" type="button" aria-label="Fermer l'image">
-        <span aria-hidden="true">×</span>
-      </button>
-      <div class="modal-visual" id="modalVisual"></div>
-      <div class="modal-caption">
-        <strong id="modalTitle"></strong>
-        <span id="modalPrice"></span>
-      </div>
-    </div>
-
-    <div class="admin-gate" id="adminGate" aria-hidden="true">
-      <form class="admin-card" id="adminLoginForm">
-        <div class="panel-header tight">
-          <div>
-            <span class="eyebrow">Accès</span>
-            <h2>Admin</h2>
-          </div>
-          <button class="icon-button" id="adminGateClose" type="button" aria-label="Fermer">
-            <span aria-hidden="true">×</span>
-          </button>
-        </div>
-        <label for="adminPassword">Mot de passe</label>
-        <input id="adminPassword" type="password" inputmode="numeric" autocomplete="current-password" required>
-        <button class="checkout-button" type="submit">Entrer</button>
-      </form>
-    </div>
-
-    <aside class="admin-panel" id="adminPanel" aria-labelledby="adminTitle" aria-hidden="true">
-      <div class="panel-header">
-        <div>
-          <span class="eyebrow">Gestion</span>
-          <h2 id="adminTitle">Produits</h2>
-        </div>
-        <button class="icon-button" id="adminClose" type="button" aria-label="Fermer le panneau admin">
-          <span aria-hidden="true">×</span>
-        </button>
-      </div>
-
-      <form class="product-form" id="productForm">
-        <input type="hidden" id="productId">
-
-        <label for="logoUpload">Logo photo</label>
-        <div class="file-upload">
-          <input id="logoUpload" class="file-input" type="file" accept="image/*">
-          <label class="file-trigger" for="logoUpload">Choisir</label>
-          <span id="logoFileName">Logo actuel</span>
-        </div>
-
-        <label>Numéros WhatsApp des commandes</label>
-        <div class="whatsapp-settings">
-          <input id="whatsappNumber1" type="tel" inputmode="tel" autocomplete="tel" placeholder="27749396760" aria-label="Numéro WhatsApp 1">
-          <input id="whatsappNumber2" type="tel" inputmode="tel" autocomplete="tel" placeholder="Deuxième numéro" aria-label="Numéro WhatsApp 2">
-          <input id="whatsappNumber3" type="tel" inputmode="tel" autocomplete="tel" placeholder="Troisième numéro" aria-label="Numéro WhatsApp 3">
-          <button class="secondary-button" id="saveWhatsapp" type="button">Sauver</button>
-        </div>
-        <p class="file-note">Ajoutez jusqu'à 3 numéros avec l'indicatif pays, sans le premier zéro.</p>
-
-        <label for="productName">Nom du produit</label>
-        <input id="productName" type="text" maxlength="80" required>
-
-        <label for="productPrice">Prix</label>
-        <input id="productPrice" type="number" min="1" step="1" required>
-
-        <label for="productCategory">Catégorie</label>
-        <select id="productCategory" required></select>
-
-        <label for="productImage">Image produit</label>
-        <div class="file-upload">
-          <input id="productImage" class="file-input" type="file" accept="image/*">
-          <label class="file-trigger" for="productImage">Choisir</label>
-          <span id="productFileName">Aucun fichier sélectionné</span>
-        </div>
-        <p class="file-note">En modification, laissez l'image vide pour conserver la photo actuelle.</p>
-
-        <div class="form-actions">
-          <button class="checkout-button" type="submit" id="productSubmit">Ajouter</button>
-          <button class="secondary-button" type="button" id="productCancel">Annuler</button>
-        </div>
-        <button class="danger-button" type="button" id="clearAddedProducts">Effacer les produits ajoutés</button>
-      </form>
-
-      <div class="admin-list" id="adminList"></div>
-    </aside>
-
-    <div class="toast-stack" id="toastStack" aria-live="polite" aria-atomic="true"></div>
-
-    <script src="app.js" defer></script>
+    <script src="app.js"></script>
   </body>
 </html>
